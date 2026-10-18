@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - run: dotnet build homework-5/SmartCampus.Canteen.sln -c Release -warnaserror
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - run: dotnet test homework-5/SmartCampus.Canteen.sln -c Release
+
+  commit-message:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check [CAMPUS-XXX] prefix
+        run: |
+          bad=$(git log --format=%s origin/${{ github.base_ref }}..HEAD | grep -Ev '^\[CAMPUS-[0-9]+\] ' || true)
+          if [ -n "$bad" ]; then
+            echo "Коммиты без ключа задачи Jira:"
+            echo "$bad"
+            exit 1
+          fi
