@@ -11,6 +11,7 @@
 | Задача Jira | CAMPUS-104 |
 | Суть миграции | Переименование колонки `Price` > `Amount` в чеке |
 | Релиз | v1.9.0 |
+| Репозиторий | https://github.com/Kakashka237/smart-campus-homework (папка `homework-5/`) |
 
 ---
 
@@ -136,6 +137,18 @@ Activity.Tags:
 > dotnet test
 Пройден!   : не пройдено     0, пройдено     2, пропущено     0, всего     2, длительность 2 s.
 ```
+
+### Проверка на PostgreSQL 18
+
+Все три фазы и sanity-тест проверены на PostgreSQL 18.1 с тестовой таблицей из 50 000 чеков (`00_baseline.sql`):
+
+| Шаг | Результат |
+|---|---|
+| `01_expand.sql` | колонка `Amount` и триггер созданы; запись «старым сервисом» только в `Price` (INSERT и UPDATE) автоматически заполняет `Amount` |
+| Сервис в фазе `Expand` + sanity-тест через `CAMPUS_SANITY_BASE_URL` | 2 из 2 тестов пройдено, технических чеков в базе не осталось (`sanity_left = 0`) |
+| `02_migrate.sql` | 50 000 строк перенесено пачками по 5 000, `not_migrated = 0`; повторный запуск проходит без ошибок |
+| `03_contract.sql` | триггер и колонка `Price` удалены, `Amount` — `NOT NULL`; повторный запуск проходит без ошибок |
+| Сервис в фазе `Contract` + sanity-тест | 2 из 2 тестов пройдено |
 
 - **ADR:** [docs/adr/0009-receipt-price-to-amount.md](docs/adr/0009-receipt-price-to-amount.md) — сравнение четырёх вариантов
   (RENAME COLUMN, маппинг в EF, VIEW, Expand and Contract) и обоснование выбора.

@@ -53,6 +53,10 @@ WHERE "Amount" IS NULL
 
 -- После успешной проверки делаем новую колонку обязательной.
 -- NOT VALID + VALIDATE не блокирует запись на время проверки всей таблицы.
+-- DROP ... IF EXISTS делает этот шаг повторяемым при перезапуске скрипта.
+ALTER TABLE "Receipts"
+    DROP CONSTRAINT IF EXISTS chk_receipts_amount_not_null;
+
 ALTER TABLE "Receipts"
     ADD CONSTRAINT chk_receipts_amount_not_null CHECK ("Amount" IS NOT NULL) NOT VALID;
 
