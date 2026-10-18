@@ -1,4 +1,4 @@
-# Changelog
+﻿# Changelog
 
 Все значимые изменения сервиса `SmartCampus.Canteen` (ИС «Умный кампус», модуль
 «Столовая и безналичная оплата») фиксируются в этом файле.
@@ -40,8 +40,8 @@
 ### Fixed
 - Повторное списание при двойном нажатии на терминале оплаты. ([CAMPUS-097])
 
-[Unreleased]: https://github.com/OWNER/smart-campus-homework/compare/v1.9.0...HEAD
-[1.9.0]: https://github.com/OWNER/smart-campus-homework/compare/v1.8.3...v1.9.0
-[1.8.3]: https://github.com/OWNER/smart-campus-homework/releases/tag/v1.8.3
+[Unreleased]: https://github.com/Kakashka237/smart-campus-homework/compare/v1.9.0...HEAD
+[1.9.0]: https://github.com/Kakashka237/smart-campus-homework/compare/v1.8.3...v1.9.0
+[1.8.3]: https://github.com/Kakashka237/smart-campus-homework/releases/tag/v1.8.3
 [CAMPUS-104]: https://jira.campus.example/browse/CAMPUS-104
 [CAMPUS-097]: https://jira.campus.example/browse/CAMPUS-097
